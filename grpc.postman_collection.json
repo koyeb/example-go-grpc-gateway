@@ -1,0 +1,398 @@
+{
+	"info": {
+		"_postman_id": "d7ec307b-7109-4717-95ca-d3f90855bcbd",
+		"name": "GRPC API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8631133"
+	},
+	"item": [
+		{
+			"name": "Add order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"order_id\": \"14\",\n        \"customer_id\": \"11\",\n        \"is_active\": true,\n        \"products\": [\n            {\n                \"product_id\": \"1\",\n                \"product_name\": \"CocaCola\",\n                \"product_type\": \"DRINK\"\n            }\n        ],\n        \"order_date\": {\n            \"year\": 2023,\n            \"month\": 11,\n            \"day\": 26\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Response body is as expected\", function() {",
+							"    const content = pm.response.json();",
+							"    const order = content.order;",
+							"    pm.expect(order.order_id).to.eql(\"14\");",
+							"    pm.expect(order.customer_id).to.eql(\"11\");",
+							"    pm.expect(order.is_active).to.be.true;",
+							"    pm.expect(order.products.length).to.be.eql(1);",
+							"    pm.expect(order.order_date.year).to.be.eql(2023);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/14",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get non-existing order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/10",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add duplicate order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"",
+							"pm.test(\"Response body is as expected\", function() {",
+							"    const content = pm.response.json();",
+							"    pm.expect(content.message).to.eql(\"duplicate order id: 14\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"order_id\": \"14\",\n        \"customer_id\": \"11\",\n        \"is_active\": true\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add another order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test if the response status is 200 OK",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"order_id\": \"24\",\n        \"customer_id\": \"11\",\n        \"is_active\": true,\n        \"products\": [\n            {\n                \"product_id\": \"2\",\n                \"product_name\": \"Pizza\",\n                \"product_type\": \"FOOD\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test if the response status is 200 OK",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\": {\n        \"order_id\": \"14\",\n        \"customer_id\": \"11\",\n        \"is_active\": false,\n        \"products\": [\n            {\n                \"product_id\": \"1\",\n                \"product_name\": \"CocaCola\",\n                \"product_type\": \"DRINK\"\n            }\n        ],\n        \"order_date\": {\n            \"year\": 2023,\n            \"month\": 11,\n            \"day\": 26\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get updated order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+							"});",
+							"",
+							"pm.test(\"Order is inactive\", function() {",
+							"    const content = pm.response.json();",
+							"    const order = content.order;",
+							"    pm.expect(order.is_active).to.be.false;",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/14",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/14",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get deleted order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/14",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete other order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{gateway-service-url}}/v0/orders/24",
+					"host": [
+						"{{gateway-service-url}}"
+					],
+					"path": [
+						"v0",
+						"orders",
+						"24"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
