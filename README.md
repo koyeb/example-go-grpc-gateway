@@ -36,13 +36,13 @@ The fastest way to deploy the two applications is to click the **Deploy to Koyeb
 
 First, deploy the gRPC API service with the following button:
 
-[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)]()
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?name=orders-service&type=git&repository=koyeb%2Fexample-go-grpc-gateway&branch=main&builder=dockerfile&target=orders-service&ports=50051%3Bhttp%3B%2F)
 
 #### Deploy the HTTP gateway
 
 Afterwards, deploy the HTTP gateway service with this button:
 
-[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)]()
+[![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?name=gateway-service&type=git&repository=koyeb%2Fexample-go-grpc-gateway&branch=main&builder=dockerfile&args=ORDER_SERVICE_ADDRESS&target=gateway-service&env%5BORDER_SERVICE_ADDRESS%5D=orders-service.orders-service.koyeb%3A50051&ports=8080%3Bhttp%3B%2F)
 
 The required environment variable for the HTTP gateway application is:
 
