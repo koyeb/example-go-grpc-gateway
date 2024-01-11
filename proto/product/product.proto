@@ -1,0 +1,17 @@
+// ./proto/product/product.proto
+
+syntax = "proto3";
+
+option go_package = "github.com/koyeb/example-grpc-api/protogen/golang/product";
+
+enum ProductType {
+    UNKNOWN = 0;
+    FOOD = 1;
+    DRINK = 2;
+}
+
+message Product {
+    uint64 product_id = 1 [ json_name = "product_id" ];
+    string product_name = 2 [ json_name = "product_name" ];
+    ProductType product_type = 5 [ json_name = "product_type" ];
+}

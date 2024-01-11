@@ -1,0 +1,57 @@
+// ./proto/orders/order.proto
+
+syntax = "proto3";
+
+option go_package = "github.com/koyeb/example-grpc-api/protogen/golang/orders";
+
+import "product/product.proto";
+import "google/api/annotations.proto";
+import "google/api/date.proto";
+
+message Order {
+    uint64 order_id = 1 [ json_name = "order_id" ];
+    uint64 customer_id = 2 [ json_name = "customer_id" ];
+    bool is_active = 3 [ json_name = "is_active" ];
+    repeated Product products = 4;
+    google.type.Date order_date = 5 [ json_name = "order_date" ];
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated
+// empty messages in your APIs
+message Empty {}
+
+message PayloadWithSingleOrder {
+  Order order = 1;
+}
+
+message PayloadWithOrderID {
+  uint64 order_id = 1;
+}
+
+service Orders {
+  rpc AddOrder(PayloadWithSingleOrder) returns (Empty) {
+    option (google.api.http) = {
+      post: "/v0/orders",
+      body: "*"
+    };
+  }
+
+  rpc GetOrder(PayloadWithOrderID) returns (PayloadWithSingleOrder) {
+    option (google.api.http) = {
+      get: "/v0/orders/{order_id}",
+    };
+  }
+
+  rpc UpdateOrder(PayloadWithSingleOrder) returns (Empty) {
+    option (google.api.http) = {
+      put: "/v0/orders",
+      body: "*"
+    };
+  }
+
+  rpc RemoveOrder(PayloadWithOrderID) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v0/orders/{order_id}",
+    };
+  }
+}

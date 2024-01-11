@@ -1,0 +1,19 @@
+{
+    "order": {
+        "order_id": "14",
+        "customer_id": "11",
+        "is_active": true,
+        "products": [
+            {
+                "product_id": "1",
+                "product_name": "CocaCola",
+                "product_type": "DRINK"
+            }
+        ],
+        "order_date": {
+            "year": 2023,
+            "month": 11,
+            "day": 26
+        }
+    }
+}

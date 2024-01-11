@@ -1,0 +1,25 @@
+# docker-compose.yaml
+version: "3.8"
+services:
+  orders-service:
+    image: orders-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: orders-service
+    ports:
+      - "50051/tcp"
+    cpus: 0.125
+    mem_limit: 128m
+  gateway-service:
+    image: gateway-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: gateway-service
+      args:
+        ORDER_SERVICE_ADDRESS: orders-service:50051
+    ports:
+      - "8080:8080"
+    cpus: 0.125
+    mem_limit: 128m
