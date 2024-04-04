@@ -58,30 +58,25 @@ If you want to customize and enhance this application, you need to fork this rep
 
 If you used the **Deploy to Koyeb** button, you can simply link your service to your forked repository to be able to push changes.  Alternatively, you can manually create the application as described below.
 
-On the [Koyeb Control Panel](//app.koyeb.com/apps), click the **Create App** button to go to the App creation page.
+On the [Koyeb Control Panel](//app.koyeb.com/apps), on the **Overview** tab, click the **Create Web Service** button to begin.
 
 For the `orders-service` application:
 
 1. Select **GitHub** as the deployment method.
 2. Select your project from the GitHub repository list and choose the appropriate branch.
-3. Set the name of the service to `orders-service`.
-4. Select **Dockerfile** in the "Choose your builder" section.
-5. Expand the **Build and deployment settings** section. Inside, click the override toggle associated with the **Target** option and enter `orders-service` in the field.
-6. Expand the **Advanced** and **Exposing your service** sections and set the port to 50051.  De-select the **Public** option to mark the service as internal.
-7. Set the App name to `orders-service`.
-8. Click Deploy to begin the deployment process.
+3. In the **Builder** section, select **Dockerfile**.  Click the **override** toggle associated with the **Target** option and enter `orders-service` in the field.
+4. Expand the **Exposed ports** sections and set the port to **50051**.  De-select the **Public** option to mark the service as internal.
+5. Set the App and Service name to `orders-service` and click **Deploy**.
 
 Next, deploy the `gateway-service` application with the following steps:
 
 1. Select **GitHub** as the deployment method.
 2. Select your project from the GitHub repository list and choose the appropriate branch.
-3. Set the name of the service to `gateway-service`.
-4. Select **Dockerfile** in the "Choose your builder" section.
-5. Expand the **Build and deployment settings** section. Inside, click the override toggle associated with the **Target** option and enter `gateway-service` in the field.  Click the override toggle associated with the **Args** option and set the value to `["ORDER_SERVICE_ADDRESS"]`.
-6. Expand the **Advanced** and **Environment variable** sections and add a new environment variable called `ORDER_SERVICE_ADDRESS` with the private address where your order service can be reached.  It should follow this format: `<SERVICE_NAME>.<APP_NAME>.koyeb:50051`.  If you followed the above steps, this should be: `orders-service.orders-service.koyeb:50051`.
-7. Expand the **Exposing your service** sections and set the port to 8080.
+3. In the **Builder** section, select **Dockerfile**.  Click the **override** toggle associated with the **Target** option and enter `gateway-service` in the field.  Click the **override** toggle associated with the **Args** option and set the value to `["ORDER_SERVICE_ADDRESS"]`.
+4. Expand **Environment variable** section and add a new environment variable called `ORDER_SERVICE_ADDRESS` with the private address where your order service can be reached.  It should follow this format: `<SERVICE_NAME>.<APP_NAME>.koyeb:50051`.  If you followed the above steps, this should be: `orders-service.orders-service.koyeb:50051`.
+5. Expand the **Exposed ports** section and set the port to **8080**.
 8. Set the App name to `gateway-service`. This determines where the application will be deployed to. For example, `https://gateway-service-<YOUR_USERNAME>.koyeb.app`.
-9. Click Deploy to begin the deployment process.
+9. Click **Deploy** to begin the deployment process.
 
 By visiting the URL for the HTTP gateway you should be able to access the API.
 
